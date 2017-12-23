@@ -47,11 +47,38 @@
         }
       },
       {
+        "package": "Fluent",
+        "repositoryURL": "https://github.com/vapor/fluent.git",
+        "state": {
+          "branch": "beta",
+          "revision": "6efe49ef8c362c105d950a24b94a0ce96600b8c8",
+          "version": null
+        }
+      },
+      {
+        "package": "FluentMySQL",
+        "repositoryURL": "https://github.com/vapor/mysql-driver.git",
+        "state": {
+          "branch": "beta",
+          "revision": "b2bf87fb61676a43fa3bf990b61469b79639a762",
+          "version": null
+        }
+      },
+      {
         "package": "Leaf",
         "repositoryURL": "https://github.com/vapor/leaf.git",
         "state": {
           "branch": "beta",
           "revision": "bb995939b257c5f24fdeb6f044708f8217f750b4",
+          "version": null
+        }
+      },
+      {
+        "package": "MySQL",
+        "repositoryURL": "https://github.com/vapor/mysql.git",
+        "state": {
+          "branch": "beta",
+          "revision": "003cf3d601d1651a3fb259b68bf90a511c8d1316",
           "version": null
         }
       },
