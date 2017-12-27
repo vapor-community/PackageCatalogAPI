@@ -1,6 +1,8 @@
 import FluentMySQL
+import Vapor
 
-final class Package {
+final class Package: Content {
+    var id: Int?
     let author: String
     let name: String
     let gitUrl: String
