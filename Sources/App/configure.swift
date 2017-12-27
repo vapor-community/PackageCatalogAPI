@@ -21,6 +21,7 @@ public func configure(
     var migirateConfig = MigrationConfig()
     // Add models here:
     // migrationConfig.add(model: MyModel.self, database: .mysql)
+    migirateConfig.add(model: Package.self, database: .mysql)
     services.instance(migirateConfig)
     
     
