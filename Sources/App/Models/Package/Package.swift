@@ -1,7 +1,4 @@
-import FluentMySQL
-import Vapor
-
-final class Package: Content {
+final class Package: Codable {
     var id: Int?
     let author: String
     let name: String
