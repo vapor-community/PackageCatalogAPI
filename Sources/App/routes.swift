@@ -17,8 +17,6 @@ final class Routes: RouteCollection {
 
     /// See RouteCollection.boot
     func boot(router: Router) throws {
-        router.get("hello") { req in
-            return Future("Hello, world!")
-        }
+        try router.register(collection: PackageController())
     }
 }
