@@ -29,9 +29,3 @@ public func configure(
     let mysql = MySQLProvider(hostname: "127.0.0.1", user: "root", password: nil, database: "package_catalog")
     try mysql.register(&services)
 }
-
-extension DatabaseIdentifier {
-    static var mysql: DatabaseIdentifier<MySQLDatabase> {
-        return .init("mysql")
-    }
-}
