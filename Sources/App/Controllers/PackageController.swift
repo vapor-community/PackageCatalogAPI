@@ -8,8 +8,7 @@ final class PackageController: RouteCollection {
     
     func create(_ request: Request)throws -> Future<Package> {
         let package = try JSONDecoder().decode(Package.self, from: request.body)
-        _ = package.save(on: request)
-        return Future(package)
+        return package.save(on: request).transform(to: package)
     }
     
     func boot(router: Router) throws {
