@@ -1,4 +1,6 @@
-final class Package: Codable {
+import Vapor
+
+final class Package: Content {
     var id: Int?
     let author: String
     let name: String
