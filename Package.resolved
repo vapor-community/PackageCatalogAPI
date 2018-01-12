@@ -38,6 +38,15 @@
         }
       },
       {
+        "package": "DatabaseKit",
+        "repositoryURL": "https://github.com/vapor/database-kit.git",
+        "state": {
+          "branch": "beta",
+          "revision": "c1dd27e0dd2fe01b5dd4389e8c0f59d31c9ca1f0",
+          "version": null
+        }
+      },
+      {
         "package": "Engine",
         "repositoryURL": "https://github.com/vapor/engine.git",
         "state": {
@@ -88,6 +97,15 @@
         "state": {
           "branch": "beta",
           "revision": "bfd6821603f6c0ad42feeefefcaafc1ab59cac0f",
+          "version": null
+        }
+      },
+      {
+        "package": "TemplateKit",
+        "repositoryURL": "https://github.com/vapor/template-kit.git",
+        "state": {
+          "branch": "beta",
+          "revision": "b5546479a8b3c299b829ec571e8aac2e1f4fef86",
           "version": null
         }
       },
