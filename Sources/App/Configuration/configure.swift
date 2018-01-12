@@ -10,22 +10,15 @@ public func configure(
     _ env: inout Environment,
     _ services: inout Services
 ) throws {
-    try services.provider(FluentProvider())
-    services.instance(FluentMySQLConfig())
+    try services.register(FluentProvider())
+    try services.register(FluentMySQLProvider())
     
     var dbConfig = DatabaseConfig()
     let database = MySQLDatabase(hostname: "localhost", user: "root", password: nil, database: "package_catalog")
     dbConfig.add(database: database, as: .mysql)
-    services.instance(dbConfig)
+    services.register(dbConfig)
     
     var migirateConfig = MigrationConfig()
-    // Add models here:
-    // migrationConfig.add(model: MyModel.self, database: .mysql)
     migirateConfig.add(model: Package.self, database: .mysql)
-    services.instance(migirateConfig)
-    
-    
-    // configure your application here
-    let mysql = MySQLProvider(hostname: "127.0.0.1", user: "root", password: nil, database: "package_catalog")
-    try mysql.register(&services)
+    services.register(migirateConfig)
 }
