@@ -1,5 +1,6 @@
 import Vapor
 import FluentPostgreSQL
+import Fluent
 import Foundation
 
 final class PackageController: RouteCollection {
@@ -9,7 +10,9 @@ final class PackageController: RouteCollection {
     
     func create(_ request: Request)throws -> Future<Package> {
         let package = try JSONDecoder().decode(Package.self, from: request.body)
-        return package.save(on: request).transform(to: package)
+        return package.flatMap(to: Package.self, { (package) -> Future<Package> in
+            package.save(on: request).transform(to: package)
+        })
     }
     
     func getById(_ request: Request)throws -> Future<Package> {
