@@ -69,7 +69,7 @@
         "repositoryURL": "https://github.com/vapor/fluent-postgresql.git",
         "state": {
           "branch": "beta",
-          "revision": "efce070da3ebcf45ab07632799ad782b9ea7ee56",
+          "revision": "b6fa58b5304d48fed5864c965777ef1ab41d1bd0",
           "version": null
         }
       },
@@ -78,7 +78,7 @@
         "repositoryURL": "https://github.com/vapor/postgresql.git",
         "state": {
           "branch": "beta",
-          "revision": "1bdeb3f68699a9c565fda9dfa5c81f8a0f0fa40a",
+          "revision": "2a2eba43d22d5c0cf085e446286ffeccd1059463",
           "version": null
         }
       },
