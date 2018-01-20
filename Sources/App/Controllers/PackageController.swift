@@ -26,9 +26,22 @@ final class PackageController: RouteCollection {
         return package
     }
     
+    func getByName(_ request: Request)throws -> Future<Package> {
+        let owner = try request.parameter(String.self)
+        let name = try request.parameter(String.self)
+        let package = Package.query(on: request).filter(\Package.name == name).filter(\Package.owner == owner)
+        return package.first().map(to: Package.self, { (pack) -> Package in
+            guard let pack = pack else {
+                throw Abort(.notFound)
+            }
+            return pack
+        })
+    }
+    
     func boot(router: Router) throws {
         router.get("packages", use: index)
         router.post("packages", use: create)
-        router.get("packages", Int.parameter, use: getById)
+        router.get("packages", String.parameter, String.parameter, use: getByName)
+//        router.get("packages", Int.parameter, use: getById)
     }
 }
