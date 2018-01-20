@@ -1,4 +1,5 @@
 import Vapor
+import FluentPostgreSQL
 import Foundation
 
 final class PackageController: RouteCollection {

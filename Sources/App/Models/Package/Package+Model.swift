@@ -1,10 +1,10 @@
-import FluentMySQL
+import FluentPostgreSQL
 
 extension Package: Model {
     static var idKey: IDKey {
         return \.id
     }
     
-    typealias Database = MySQLDatabase
+    typealias Database = PostgreSQLDatabase
     typealias ID = Int
 }

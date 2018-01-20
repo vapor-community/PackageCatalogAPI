@@ -7,10 +7,10 @@ let package = Package(
         // 💧 A server-side Swift web framework. 
         .package(url: "https://github.com/vapor/vapor.git", .branch("beta")),
         .package(url: "https://github.com/vapor/fluent.git", .branch("beta")),
-        .package(url: "https://github.com/vapor/mysql-driver.git", .branch("beta"))
+        .package(url: "https://github.com/vapor/fluent-postgresql.git", .branch("beta"))
     ],
     targets: [
-        .target(name: "App", dependencies: ["Vapor", "Fluent", "FluentMySQL"]),
+        .target(name: "App", dependencies: ["Vapor", "Fluent", "FluentPostgreSQL"]),
         .target(name: "Run", dependencies: ["App"]),
         .testTarget(name: "AppTests", dependencies: ["App"]),
     ]

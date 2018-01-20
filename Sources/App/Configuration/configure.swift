@@ -1,6 +1,5 @@
 import Vapor
-import MySQL
-import FluentMySQL
+import FluentPostgreSQL
 
 /// Called before your application initializes.
 ///
@@ -11,14 +10,16 @@ public func configure(
     _ services: inout Services
 ) throws {
     try services.register(FluentProvider())
-    try services.register(FluentMySQLProvider())
+    try services.register(FluentPostgreSQLProvider())
     
+    let psqlConfig = PostgreSQLDatabaseConfig(hostname: "localhost", port: 5432, username: "calebkleveter")
     var dbConfig = DatabaseConfig()
-    let database = MySQLDatabase(hostname: "localhost", user: "root", password: nil, database: "package_catalog")
-    dbConfig.add(database: database, as: .mysql)
+    
+    let database = PostgreSQLDatabase(config: psqlConfig)
+    dbConfig.add(database: database, as: .postgres)
     services.register(dbConfig)
     
     var migirateConfig = MigrationConfig()
-    migirateConfig.add(model: Package.self, database: .mysql)
+    migirateConfig.add(model: Package.self, database: .postgres)
     services.register(migirateConfig)
 }

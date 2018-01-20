@@ -1,9 +1,9 @@
-import FluentMySQL
+import FluentPostgreSQL
 import Vapor
 
 extension DatabaseIdentifier {
-    static var mysql: DatabaseIdentifier<MySQLDatabase> {
-        return .init("mysql")
+    static var postgres: DatabaseIdentifier<PostgreSQLDatabase> {
+        return .init("postgresql")
     }
 }
 
