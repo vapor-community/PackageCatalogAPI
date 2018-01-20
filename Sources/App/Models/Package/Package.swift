@@ -7,7 +7,7 @@ final class Package: Content {
     let gitUrl: String
     
     init(owner: String, name: String, gitUrl: String) {
-        self.owner = author
+        self.owner = owner
         self.name = name
         self.gitUrl = gitUrl
     }
