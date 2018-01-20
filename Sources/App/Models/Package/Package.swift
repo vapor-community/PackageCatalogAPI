@@ -2,12 +2,12 @@ import Vapor
 
 final class Package: Content {
     var id: Int?
-    let author: String
+    let owner: String
     let name: String
     let gitUrl: String
     
-    init(author: String, name: String, gitUrl: String) {
-        self.author = author
+    init(owner: String, name: String, gitUrl: String) {
+        self.owner = author
         self.name = name
         self.gitUrl = gitUrl
     }
