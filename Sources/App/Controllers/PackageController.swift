@@ -9,7 +9,7 @@ final class PackageController: RouteCollection {
     }
     
     func create(_ request: Request)throws -> Future<Package> {
-        let package = try JSONDecoder().decode(Package.self, from: request.body)
+        let package = try JSONDecoder().decode(Package.self, from: request.http.body)
         return package.flatMap(to: Package.self, { (package) -> Future<Package> in
             package.save(on: request).transform(to: package)
         })
