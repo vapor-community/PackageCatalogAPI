@@ -27,9 +27,24 @@ final class PackageController: RouteCollection {
         })
     }
     
+    func delete(_ request: Request)throws -> Future<HTTPStatus> {
+        let owner = try request.parameter(String.self)
+        let name = try request.parameter(String.self)
+        let package = Package.query(on: request).filter(\Package.name == name).filter(\Package.owner == owner)
+        return package.first().flatMap(to: Void.self, { (pack) in
+            guard let pack = pack else {
+                throw Abort(.notFound)
+            }
+            return pack.delete(on: request)
+        }).map(to: HTTPStatus.self, { _ in
+            return .ok
+        })
+    }
+    
     func boot(router: Router) throws {
         router.get("packages", use: index)
         router.post("packages", use: create)
         router.get("packages", String.parameter, String.parameter, use: getByName)
+        router.delete("packages", String.parameter, String.parameter, use: delete)
     }
 }
