@@ -15,17 +15,6 @@ final class PackageController: RouteCollection {
         })
     }
     
-    func getById(_ request: Request)throws -> Future<Package> {
-        let id: Int = try request.parameter()
-        let package = Package.find(id, on: request).map(to: Package.self, { (package)throws -> Package in
-            guard let package = package else {
-                throw Abort(.badRequest)
-            }
-            return package
-        })
-        return package
-    }
-    
     func getByName(_ request: Request)throws -> Future<Package> {
         let owner = try request.parameter(String.self)
         let name = try request.parameter(String.self)
@@ -42,6 +31,5 @@ final class PackageController: RouteCollection {
         router.get("packages", use: index)
         router.post("packages", use: create)
         router.get("packages", String.parameter, String.parameter, use: getByName)
-//        router.get("packages", Int.parameter, use: getById)
     }
 }
