@@ -20,3 +20,5 @@ extension Version: Model {
         return \.id
     }
 }
+
+extension Version: Migration {}
