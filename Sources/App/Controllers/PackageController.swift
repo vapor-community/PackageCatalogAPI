@@ -4,26 +4,31 @@ import Fluent
 import Foundation
 
 final class PackageController: RouteCollection {
-    func index(_ request: Request)throws -> Future<[Package]> {
-        return Package.query(on: request).all()
-    }
-    
-    func create(_ request: Request)throws -> Future<Package> {
-        let package = try JSONDecoder().decode(Package.self, from: request.http.body)
-        return package.flatMap(to: Package.self, { (package) -> Future<Package> in
-            package.save(on: request).transform(to: package)
+    func index(_ request: Request)throws -> Future<[PackageData]> {
+        return Package.query(on: request).all().flatMap(to: [PackageData].self, { (packages) in
+            return try packages.public(with: request)
         })
     }
     
-    func getByName(_ request: Request)throws -> Future<Package> {
+    func create(_ request: Request)throws -> Future<PackageData> {
+        let package = try JSONDecoder().decode(Package.self, from: request.http.body)
+        return package.flatMap(to: Package.self, { (package) in
+            package.save(on: request).transform(to: package)
+        }).flatMap(to: PackageData.self, { (package) in
+            return try package.public(with: request)
+        })
+    }
+    
+    func getByName(_ request: Request)throws -> Future<PackageData> {
         let owner = try request.parameter(String.self)
         let name = try request.parameter(String.self)
         let package = Package.query(on: request).filter(\Package.name == name).filter(\Package.owner == owner)
-        return package.first().map(to: Package.self, { (pack) -> Package in
+        
+        return package.first().flatMap(to: PackageData.self, { (pack) in
             guard let pack = pack else {
                 throw Abort(.notFound)
             }
-            return pack
+            return try pack.public(with: request)
         })
     }
     
