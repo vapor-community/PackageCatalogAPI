@@ -1,4 +1,5 @@
 import Vapor
+import FluentPostgreSQL
 
 final class Package: Content {
     var id: Int?
@@ -12,3 +13,13 @@ final class Package: Content {
         self.gitUrl = gitUrl
     }
 }
+
+extension Package: Model {
+     typealias Database = PostgreSQLDatabase
+    
+    static var idKey: WritableKeyPath<Package, Int?> {
+        return \.id
+    }
+}
+
+extension Package: Migration {}
