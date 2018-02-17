@@ -32,3 +32,12 @@ extension Package: Model {
 }
 
 extension Package: Migration {}
+
+extension Package {
+    func versions(queriedWith executor: DatabaseConnectable)throws -> QueryBuilder<Version> {
+        guard let id = self.id else {
+            throw Abort(.internalServerError, reason: "The package '\(self.owner)/\(self.name)' has not been saved to the database", identifier: "packageNotSaved")
+        }
+        return Version.query(on: executor).filter(\.packageId == id).sort(\.tag, .descending)
+    }
+}
