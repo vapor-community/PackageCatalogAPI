@@ -3,6 +3,7 @@ import FluentPostgreSQL
 
 final class Package: Content {
     var id: Int?
+    
     let owner: String
     let name: String
     let host: String
