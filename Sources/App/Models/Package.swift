@@ -8,7 +8,7 @@ final class Package: Content {
     let name: String
     let host: String
     
-    init(owner: String, name: String, host: String) {
+    init(owner: String, name: String, host: String = "github") {
         self.owner = owner
         self.name = name
         self.host = host
