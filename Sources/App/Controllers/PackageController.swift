@@ -35,7 +35,7 @@ final class PackageController: RouteCollection {
             guard let pack = pack else {
                 throw Abort(.notFound)
             }
-            return pack.delete(on: request)
+            return pack.delete(on: request).transform(to: ())
         }).map(to: HTTPStatus.self, { _ in
             return .ok
         })
