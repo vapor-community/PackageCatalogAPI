@@ -18,7 +18,7 @@ final class Package: Content {
         return "git@\(self.host).com:\(self.owner)/\(self.name)"
     }
     
-    var http: String {
+    var https: String {
         return "https://\(self.host).com/\(self.owner)/\(self.name).git"
     }
 }
