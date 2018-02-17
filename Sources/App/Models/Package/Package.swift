@@ -5,12 +5,20 @@ final class Package: Content {
     var id: Int?
     let owner: String
     let name: String
-    let gitUrl: String
+    let host: String
     
-    init(owner: String, name: String, gitUrl: String) {
+    init(owner: String, name: String, host: String) {
         self.owner = owner
         self.name = name
-        self.gitUrl = gitUrl
+        self.host = host
+    }
+    
+    var ssh: String {
+        return "git@\(self.host).com:\(self.owner)/\(self.name)"
+    }
+    
+    var http: String {
+        return "https://\(self.host).com/\(self.owner)/\(self.name).git"
     }
 }
 
