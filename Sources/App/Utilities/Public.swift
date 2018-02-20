@@ -1,35 +1,26 @@
 import Vapor
-
-protocol Public: Content {
-    associatedtype Data: Encodable
-    
-    static func make(from model: Data, with executor: DatabaseConnectable)throws -> Future<Self>
-}
+import Fluent
 
 protocol Publicizable {
-    associatedtype PublicData: Public
+    associatedtype Public: Content
     
-    func `public`(with executor: DatabaseConnectable)throws -> Future<PublicData>
-}
-
-extension Publicizable where Self.PublicData.Data == Self {
-    func `public`(with executor: DatabaseConnectable)throws -> Future<PublicData> {
-        return try PublicData.make(from: self, with: executor)
-    }
-}
-
-extension Array: Public where Element: Public {
-    typealias Data = [Element]
-    
-    static func make(from model: [Element], with executor: DatabaseConnectable) throws -> Future<Array<Element>> {
-        return Future(model)
-    }
+    func `public`(with executor: DatabaseConnectable) -> Future<Public>
 }
 
 extension Array: Publicizable where Element: Publicizable {
-    typealias PublicData = [Element.PublicData]
+    typealias Public = [Element.Public]
     
-    func `public`(with executor: DatabaseConnectable) throws -> Future<[Element.PublicData]> {
-        return try self.map({ try $0.public(with: executor) }).flatten()
+    func `public`(with executor: DatabaseConnectable) -> Future<[Element.Public]> {
+        return self.map({ $0.public(with: executor) }).flatten()
+    }
+}
+
+extension Future: Publicizable where T: Publicizable {
+    typealias Public = T.Public
+    
+    func `public`(with executor: DatabaseConnectable) -> Future<T.Public> {
+        return self.flatMap(to: T.Public.self, { (this) in
+            return this.public(with: executor)
+        })
     }
 }
