@@ -33,10 +33,6 @@ extension Package: Model {
 
 extension Package: Migration {}
 
-extension Package: Publicizable {
-    typealias PublicData = PackageData
-}
-
 extension Package {
     func versions(queriedWith executor: DatabaseConnectable)throws -> QueryBuilder<Version> {
         guard let id = self.id else {
