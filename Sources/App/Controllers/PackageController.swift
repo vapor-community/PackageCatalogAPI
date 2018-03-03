@@ -4,16 +4,16 @@ import Fluent
 import Foundation
 
 final class PackageController: RouteCollection {
-    func index(_ request: Request)throws -> Future<[PackageData]> {
+    func index(_ request: Request)throws -> Future<[Package]> {
         return Package.query(on: request).all().public(with: request)
     }
     
-    func create(_ request: Request)throws -> Future<PackageData> {
+    func create(_ request: Request)throws -> Future<Package> {
         let package = try JSONDecoder().decode(Package.self, from: request.http.body)
         return package.save(on: request).public(with: request)
     }
     
-    func getByName(_ request: Request)throws -> Future<PackageData> {
+    func getByName(_ request: Request)throws -> Future<Package> {
         let owner = try request.parameter(String.self)
         let name = try request.parameter(String.self)
         let package = Package.query(on: request).filter(\Package.name == name).filter(\Package.owner == owner)

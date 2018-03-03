@@ -25,6 +25,5 @@ public func configure(
     
     var migirateConfig = MigrationConfig()
     migirateConfig.add(model: Package.self, database: .postgres)
-    migirateConfig.add(model: Version.self, database: .postgres)
     services.register(migirateConfig)
 }

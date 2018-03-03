@@ -7,11 +7,13 @@ final class Package: Content {
     let owner: String
     let name: String
     let host: String
+    let versions: [String]
     
-    init(owner: String, name: String, host: String = "github") {
+    init(owner: String, name: String, host: String = "github", versions: [String] = []) {
         self.owner = owner
         self.name = name
         self.host = host
+        self.versions = versions
     }
     
     var ssh: String {
@@ -33,11 +35,12 @@ extension Package: Model {
 
 extension Package: Migration {}
 
-extension Package {
-    func versions(queriedWith executor: DatabaseConnectable)throws -> QueryBuilder<Version> {
-        guard let id = self.id else {
-            throw Abort(.internalServerError, reason: "The package '\(self.owner)/\(self.name)' has not been saved to the database", identifier: "packageNotSaved")
-        }
-        return Version.query(on: executor).filter(\.packageId == id).sort(\.tag, .descending)
+extension Package: Publicizable {
+    func `public`(with executor: DatabaseConnectable) -> Future<Package> {
+        return Future(self)
     }
+    
+    typealias Public = Package
+    
+    
 }
