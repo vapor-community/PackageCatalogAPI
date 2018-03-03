@@ -8,12 +8,23 @@ final class Package: Content {
     let name: String
     let host: String
     let versions: [String]
+    let branches: [String]
+    let license: String
     
-    init(owner: String, name: String, host: String = "github", versions: [String] = []) {
+    let stars: Int
+    let watchers: Int
+    let forks: Int
+    
+    init(owner: String, name: String, host: String = "github", versions: [String] = [], branches: [String] = [], license: String = "MIT", stars: Int, watchers: Int, forks: Int) {
         self.owner = owner
         self.name = name
         self.host = host
         self.versions = versions
+        self.branches = branches
+        self.license = license
+        self.stars = stars
+        self.watchers = watchers
+        self.forks = forks
     }
     
     var ssh: String {
