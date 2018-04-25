@@ -20,10 +20,10 @@ public func configure(
     var dbConfig = DatabaseConfig()
     
     let database = PostgreSQLDatabase(config: psqlConfig)
-    dbConfig.add(database: database, as: .postgres)
+    dbConfig.add(database: database, as: .psql)
     services.register(dbConfig)
     
     var migirateConfig = MigrationConfig()
-    migirateConfig.add(model: Package.self, database: .postgres)
+    migirateConfig.add(model: Package.self, database: .psql)
     services.register(migirateConfig)
 }
