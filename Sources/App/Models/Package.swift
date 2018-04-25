@@ -1,7 +1,7 @@
 import Vapor
 import FluentPostgreSQL
 
-final class Package: Content {
+final class Package: Content, PostgreSQLModel, Migration {
     var id: Int?
     
     let owner: String
@@ -35,14 +35,3 @@ final class Package: Content {
         return "https://\(self.host).com/\(self.owner)/\(self.name).git"
     }
 }
-
-extension Package: Model {
-     typealias Database = PostgreSQLDatabase
-    
-    static var idKey: WritableKeyPath<Package, Int?> {
-        return \.id
-    }
-}
-
-extension Package: Migration {}
-
