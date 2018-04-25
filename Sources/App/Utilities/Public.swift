@@ -11,7 +11,7 @@ extension Array: Publicizable where Element: Publicizable {
     typealias Public = [Element.Public]
     
     func `public`(with executor: DatabaseConnectable) -> Future<[Element.Public]> {
-        return self.map({ $0.public(with: executor) }).flatten()
+        return self.map({ $0.public(with: executor) }).flatten(on: executor)
     }
 }
 

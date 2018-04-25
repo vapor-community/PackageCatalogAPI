@@ -46,12 +46,3 @@ extension Package: Model {
 
 extension Package: Migration {}
 
-extension Package: Publicizable {
-    func `public`(with executor: DatabaseConnectable) -> Future<Package> {
-        return Future(self)
-    }
-    
-    typealias Public = Package
-    
-    
-}
