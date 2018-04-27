@@ -39,6 +39,7 @@ final class PackageController: RouteCollection {
     func update(_ request: Request, _ body: PackageUpdateBody)throws -> Future<Package> {
         return try request.parameters.next(Package.self).flatMap(to: Package.self) { package in
             package.name = body.name ?? package.name
+            package.description = body.description ?? package.description
             package.versions = body.versions ?? package.versions
             package.branches = body.branches ?? package.branches
             package.license = body.license ?? package.license
@@ -61,6 +62,7 @@ final class PackageController: RouteCollection {
 
 struct PackageUpdateBody: Content {
     var name: String?
+    var description: String?
     var versions: [String]?
     var branches: [String]?
     var license: String?
