@@ -14,6 +14,8 @@ final class PackageController: RouteCollection {
         packages.get(String.parameter, String.parameter, use: getByName)
         packages.patch(PackageUpdateBody.self, at: Package.parameter, use: update)
         packages.delete(String.parameter, String.parameter, use: delete)
+        
+        packages.post(RepoURL.self, at: "add", "github", use: createFromGitHub)
     }
     
     func create(_ request: Request, _ package: Package)throws -> Future<Package> {
