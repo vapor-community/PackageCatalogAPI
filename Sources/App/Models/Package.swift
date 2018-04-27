@@ -1,7 +1,7 @@
 import Vapor
 import FluentPostgreSQL
 
-final class Package: Content, PostgreSQLModel, Migration {
+final class Package: Content, PostgreSQLModel, Migration, Parameter {
     var id: Int?
     
     let owner: String
