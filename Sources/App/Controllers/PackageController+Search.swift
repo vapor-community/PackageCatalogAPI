@@ -10,6 +10,7 @@ extension PackageController {
             try query.group(.or) { (query) in
                 try query.filter(\.owner ~~ name)
                 try query.filter(\.name ~~ name)
+                try query.filter(\.description ~~ name)
             }
         }
         
