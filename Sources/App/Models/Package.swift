@@ -4,16 +4,17 @@ import FluentPostgreSQL
 final class Package: Content, PostgreSQLModel, Migration, Parameter {
     var id: Int?
     
-    let owner: String
-    let name: String
     let host: String
-    let versions: [String]
-    let branches: [String]
-    let license: String
+    let owner: String
     
-    let stars: Int
-    let watchers: Int
-    let forks: Int
+    var name: String
+    var versions: [String]
+    var branches: [String]
+    var license: String
+    
+    var stars: Int
+    var watchers: Int
+    var forks: Int
     
     init(owner: String, name: String, host: String = "github", versions: [String] = [], branches: [String] = [], license: String = "MIT", stars: Int, watchers: Int, forks: Int) {
         self.owner = owner
