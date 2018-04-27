@@ -24,7 +24,7 @@ extension PackageController {
             case "stars": sortProperty = \.stars
             case "watchers": sortProperty = \.watchers
             case "forks": sortProperty = \.forks
-            default: throw Abort(.badRequest, reason: "Bad 'sort' value. Use one fo the following: 'stars', 'watchers', 'forks'")
+            default: throw Abort(.badRequest, reason: "Bad 'sort' value. Use one of the following: 'stars', 'watchers', 'forks'")
             }
             
             let sortDirection: QuerySortDirection
