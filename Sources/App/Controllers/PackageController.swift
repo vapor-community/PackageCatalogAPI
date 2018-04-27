@@ -11,15 +11,16 @@ final class PackageController: RouteCollection {
         packages.get(use: index)
         packages.get(Package.parameter, use: read)
         packages.get(String.parameter, String.parameter, use: getByName)
+        packages.patch(PackageUpdateBody.self, at: Package.parameter, use: update)
         packages.delete(String.parameter, String.parameter, use: delete)
-    }
-    
-    func index(_ request: Request)throws -> Future<[Package]> {
-        return Package.query(on: request).all()
     }
     
     func create(_ request: Request, _ package: Package)throws -> Future<Package> {
         return package.save(on: request)
+    }
+    
+    func index(_ request: Request)throws -> Future<[Package]> {
+        return Package.query(on: request).all()
     }
     
     func read(_ request: Request)throws -> Future<Package> {
@@ -34,6 +35,20 @@ final class PackageController: RouteCollection {
         return package.first().unwrap(or: Abort(.notFound))
     }
     
+    func update(_ request: Request, _ body: PackageUpdateBody)throws -> Future<Package> {
+        return try request.parameters.next(Package.self).flatMap(to: Package.self) { package in
+            package.name = body.name ?? package.name
+            package.versions = body.versions ?? package.versions
+            package.branches = body.branches ?? package.branches
+            package.license = body.license ?? package.license
+            package.stars = body.stars ?? package.stars
+            package.watchers = body.watchers ?? package.watchers
+            package.forks = body.forks ?? package.forks
+            
+            return package.update(on: request)
+        }
+    }
+    
     func delete(_ request: Request)throws -> Future<HTTPStatus> {
         let owner = try request.parameters.next(String.self)
         let name = try request.parameters.next(String.self)
@@ -41,4 +56,14 @@ final class PackageController: RouteCollection {
         
         return package.first().unwrap(or: Abort(.notFound)).delete(on: request).transform(to: .ok)
     }
+}
+
+struct PackageUpdateBody: Content {
+    var name: String?
+    var versions: [String]?
+    var branches: [String]?
+    var license: String?
+    var stars: Int?
+    var watchers: Int?
+    var forks: Int?
 }
