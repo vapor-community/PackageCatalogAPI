@@ -26,4 +26,8 @@ public func configure(
     var migirateConfig = MigrationConfig()
     migirateConfig.add(model: Package.self, database: .psql)
     services.register(migirateConfig)
+    
+    var commands = CommandConfig.default()
+    commands.useFluentCommands()
+    services.register(commands)
 }
