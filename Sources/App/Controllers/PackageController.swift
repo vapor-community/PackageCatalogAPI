@@ -5,11 +5,13 @@ import Foundation
 
 final class PackageController: RouteCollection {
     func boot(router: Router) throws {
-        router.post(Package.self, at: "packages", use: create)
-        router.get("packages", use: index)
-        router.get("packages", Package.parameter, use: read)
-        router.get("packages", String.parameter, String.parameter, use: getByName)
-        router.delete("packages", String.parameter, String.parameter, use: delete)
+        let packages = router.grouped("packages")
+        
+        packages.post(Package.self, at: "packages", use: create)
+        packages.get(use: index)
+        packages.get(Package.parameter, use: read)
+        packages.get(String.parameter, String.parameter, use: getByName)
+        packages.delete(String.parameter, String.parameter, use: delete)
     }
     
     func index(_ request: Request)throws -> Future<[Package]> {
