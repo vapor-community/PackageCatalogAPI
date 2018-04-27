@@ -1,5 +1,11 @@
 import Vapor
 
+struct GitHubPackageData: Content {
+    let repo: GitHubPackage
+    let tags: [GitHubNode]
+    let branches: [GitHubNode]
+}
+
 // MARK: /owner/name
 
 struct GitHubPackage: Content {
