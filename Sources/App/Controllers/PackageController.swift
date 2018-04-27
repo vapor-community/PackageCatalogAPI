@@ -9,6 +9,7 @@ final class PackageController: RouteCollection {
         
         packages.post(Package.self, at: "packages", use: create)
         packages.get(use: index)
+        packages.get("search", use: search)
         packages.get(Package.parameter, use: read)
         packages.get(String.parameter, String.parameter, use: getByName)
         packages.patch(PackageUpdateBody.self, at: Package.parameter, use: update)
