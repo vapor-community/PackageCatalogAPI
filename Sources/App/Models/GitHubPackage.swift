@@ -1,7 +1,7 @@
 import Vapor
 
 struct GitHubPackageData: Content {
-    let readme: String
+    let readme: String?
     let manifestProducts: [String]
     let repo: GitHubPackage
     let tags: [GitHubRelease]

@@ -31,7 +31,10 @@ extension PackageController {
         
         let readme = client.get(readmeURL).catchMap { _ in
             return request.makeResponse()
-        }.flatMap(to: String.self) { response in return try response.content.decode(String.self) }
+        }.map(to: String?.self) { response in
+            guard let data = response.http.body.data else { return nil }
+            return String(data: data, encoding: .utf8)
+        }
         
         return flatMap(to: GitHubPackageData.self, client.get(urls.main), client.get(urls.branches), client.get(urls.tags)) { repoResponse, branchesReponse, tagsResponse in
             return map(
