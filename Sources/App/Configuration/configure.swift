@@ -16,8 +16,9 @@ public func configure(
     try routes(router)
     services.register(router, as: Router.self)
     
-    let psqlConfig = PostgreSQLDatabaseConfig(hostname: "localhost", port: 5432, username: "calebkleveter")
-    var dbConfig = DatabaseConfig()
+    let owner = try Process.execute("whoami")
+    let psqlConfig = PostgreSQLDatabaseConfig(hostname: "localhost", port: 5432, username: owner, database: "packages")
+    var dbConfig = DatabasesConfig()
     
     let database = PostgreSQLDatabase(config: psqlConfig)
     dbConfig.add(database: database, as: .psql)
