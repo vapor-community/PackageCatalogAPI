@@ -2,8 +2,8 @@ import Vapor
 
 struct GitHubPackageData: Content {
     let repo: GitHubPackage
-    let tags: [GitHubNode]
-    let branches: [GitHubNode]
+    let tags: [GitHubRelease]
+    let branches: [GitHubBranch]
 }
 
 // MARK: /owner/name
@@ -39,6 +39,14 @@ struct GitHubLicense: Content {
 
 // MARK: /owner/name/{branches|tags}
 
-struct GitHubNode: Content {
+struct GitHubBranch: Content {
     let name: String
+}
+
+struct GitHubRelease: Content {
+    let name: String
+    
+    enum CodingKeys: String, CodingKey {
+        case name = "tag_name"
+    }
 }

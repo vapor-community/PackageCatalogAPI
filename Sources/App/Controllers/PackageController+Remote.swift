@@ -8,15 +8,15 @@ extension PackageController {
         var components = url.repo.split(separator: "/").map(String.init)
         let (name, owner) = (components.removeLast(), components.removeLast())
         let base = remote + owner + "/" + name
-        let urls = (main: base, branches: base + "/branches", tags: base + "/tags")
+        let urls = (main: base, branches: base + "/branches", tags: base + "/releases")
         
         let client = try request.make(Client.self)
         return flatMap(to: GitHubPackageData.self, client.get(urls.main), client.get(urls.branches), client.get(urls.tags)) { repoResponse, branchesReponse, tagsResponse in
             return map(
                 to: GitHubPackageData.self,
                 try repoResponse.content.decode(GitHubPackage.self),
-                try branchesReponse.content.decode([GitHubNode].self),
-                try tagsResponse.content.decode([GitHubNode].self)
+                try branchesReponse.content.decode([GitHubBranch].self),
+                try tagsResponse.content.decode([GitHubRelease].self)
             ) { base, branches, tags -> GitHubPackageData in
                 return GitHubPackageData(repo: base, tags: tags, branches: branches)
             }
