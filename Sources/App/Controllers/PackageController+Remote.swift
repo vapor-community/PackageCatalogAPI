@@ -18,7 +18,10 @@ extension PackageController {
                 try branchesReponse.content.decode([GitHubBranch].self),
                 try tagsResponse.content.decode([GitHubRelease].self)
             ) { base, branches, tags -> GitHubPackageData in
-                return GitHubPackageData(repo: base, tags: tags, branches: branches)
+                let storedTags = tags.sorted { first, second in
+                    return first.name > second.name
+                }
+                return GitHubPackageData(repo: base, tags: storedTags, branches: branches)
             }
         }.flatMap(to: Package.self) { data in
             let package = Package(
