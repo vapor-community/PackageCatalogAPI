@@ -10,7 +10,6 @@ final class PackageController: RouteCollection {
         packages.post(Package.self, at: "packages", use: create)
         packages.get(use: index)
         packages.get("search", use: search)
-        packages.get(Package.parameter, use: read)
         packages.get(String.parameter, String.parameter, use: getByName)
         packages.patch(PackageUpdateBody.self, at: Package.parameter, use: update)
         packages.delete(String.parameter, String.parameter, use: delete)
@@ -24,10 +23,6 @@ final class PackageController: RouteCollection {
     
     func index(_ request: Request)throws -> Future<[Package]> {
         return Package.query(on: request).all()
-    }
-    
-    func read(_ request: Request)throws -> Future<Package> {
-        return try request.parameters.next(Package.self)
     }
     
     func getByName(_ request: Request)throws -> Future<Package> {
