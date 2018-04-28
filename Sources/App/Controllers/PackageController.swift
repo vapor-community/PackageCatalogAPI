@@ -40,6 +40,7 @@ final class PackageController: RouteCollection {
             package.versions = body.versions ?? package.versions
             package.branches = body.branches ?? package.branches
             package.license = body.license ?? package.license
+            package.readme = body.readme ?? package.readme
             package.stars = body.stars ?? package.stars
             package.watchers = body.watchers ?? package.watchers
             package.forks = body.forks ?? package.forks
@@ -64,6 +65,7 @@ struct PackageUpdateBody: Content {
     var versions: [String]?
     var branches: [String]?
     var license: String?
+    var readme: String?
     var stars: Int?
     var watchers: Int?
     var forks: Int?

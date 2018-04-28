@@ -12,6 +12,7 @@ final class Package: Content, PostgreSQLModel, Migration, Parameter {
     var versions: [String]
     var branches: [String]
     var license: String
+    var readme: String?
     
     var stars: Int
     var watchers: Int
@@ -27,6 +28,7 @@ final class Package: Content, PostgreSQLModel, Migration, Parameter {
         versions: [String] = [],
         branches: [String] = [],
         license: String = "MIT",
+        readme: String? = nil,
         stars: Int,
         watchers: Int,
         forks: Int,
@@ -39,6 +41,7 @@ final class Package: Content, PostgreSQLModel, Migration, Parameter {
         self.versions = versions
         self.branches = branches
         self.license = license
+        self.readme = readme
         self.stars = stars
         self.watchers = watchers
         self.forks = forks
