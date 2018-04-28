@@ -53,7 +53,7 @@ final class PackageController: RouteCollection {
         let name = try request.parameters.next(String.self)
         let package = try Package.query(on: request).filter(\Package.name == name).filter(\Package.owner == owner)
         
-        return package.first().unwrap(or: Abort(.notFound)).delete(on: request).transform(to: .ok)
+        return package.first().unwrap(or: Abort(.notFound)).delete(on: request).transform(to: .noContent)
     }
 }
 
