@@ -43,6 +43,7 @@ final class PackageController: RouteCollection {
             package.stars = body.stars ?? package.stars
             package.watchers = body.watchers ?? package.watchers
             package.forks = body.forks ?? package.forks
+            package.products = body.products ?? package.products
             
             return package.update(on: request)
         }
@@ -66,4 +67,5 @@ struct PackageUpdateBody: Content {
     var stars: Int?
     var watchers: Int?
     var forks: Int?
+    var products: [String]?
 }

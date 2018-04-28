@@ -17,6 +17,8 @@ final class Package: Content, PostgreSQLModel, Migration, Parameter {
     var watchers: Int
     var forks: Int
     
+    var products: [String]
+    
     init(
         owner: String,
         name: String,
@@ -27,7 +29,8 @@ final class Package: Content, PostgreSQLModel, Migration, Parameter {
         license: String = "MIT",
         stars: Int,
         watchers: Int,
-        forks: Int
+        forks: Int,
+        products: [String] = []
     ) {
         self.owner = owner
         self.name = name
@@ -39,6 +42,7 @@ final class Package: Content, PostgreSQLModel, Migration, Parameter {
         self.stars = stars
         self.watchers = watchers
         self.forks = forks
+        self.products = products
     }
     
     var ssh: String {

@@ -1,6 +1,7 @@
 import Vapor
 
 struct GitHubPackageData: Content {
+    let manifestProducts: [String]
     let repo: GitHubPackage
     let tags: [GitHubRelease]
     let branches: [GitHubBranch]
