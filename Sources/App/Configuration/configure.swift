@@ -1,6 +1,8 @@
 import Vapor
 import FluentPostgreSQL
 
+let adminToken = Environment.get("ADMIN_TOKEN")!
+
 /// Called before your application initializes.
 ///
 /// [Learn More →](https://docs.vapor.codes/3.0/getting-started/structure/#configureswift)
@@ -31,4 +33,8 @@ public func configure(
     var commands = CommandConfig.default()
     commands.useFluentCommands()
     services.register(commands)
+    
+    guard Environment.get("ADMIN_TOKEN") != nil else {
+        throw Abort(.internalServerError, reason: "Missing `ADMIN_TOKEN` environment variable.", identifier: "missingEnvVar")
+    }
 }
