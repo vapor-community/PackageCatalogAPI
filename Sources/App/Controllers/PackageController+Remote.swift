@@ -34,6 +34,11 @@ extension PackageController {
         }.map(to: String?.self) { response in
             guard let data = response.http.body.data else { return nil }
             return String(data: data, encoding: .utf8)
+        }.catchMap { error in
+            if let error = error as? AbortError, error.status == .notFound {
+                return nil
+            }
+            throw error
         }
         
         return flatMap(to: GitHubPackageData.self, client.get(urls.main), client.get(urls.branches), client.get(urls.tags)) { repoResponse, branchesReponse, tagsResponse in
