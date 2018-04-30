@@ -11,7 +11,7 @@ final class PackageController: RouteCollection {
         packages.get(use: index)
         packages.get("search", use: search)
         packages.get(String.parameter, String.parameter, use: getByName)
-        packages.patch(PackageUpdateBody.self, at: Package.parameter, use: update)
+        packages.patch(PackageUpdateBody.self, at: String.parameter, String.parameter, use: update)
         packages.delete(String.parameter, String.parameter, use: delete)
         
         packages.post(RepoURL.self, at: "add", "github", use: createFromGitHub)
@@ -34,7 +34,11 @@ final class PackageController: RouteCollection {
     }
     
     func update(_ request: Request, _ body: PackageUpdateBody)throws -> Future<Package> {
-        return try request.parameters.next(Package.self).flatMap(to: Package.self) { package in
+        let owner = try request.parameters.next(String.self)
+        let name = try request.parameters.next(String.self)
+        let package = try Package.query(on: request).filter(\Package.name == name).filter(\Package.owner == owner).first().unwrap(or: Abort(.notFound))
+        
+        return package.flatMap(to: Package.self) { package in
             package.name = body.name ?? package.name
             package.description = body.description ?? package.description
             package.versions = body.versions ?? package.versions
