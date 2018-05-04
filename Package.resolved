@@ -65,6 +65,15 @@
         }
       },
       {
+        "package": "Manifest",
+        "repositoryURL": "https://github.com/Ether-CLI/Manifest.git",
+        "state": {
+          "branch": null,
+          "revision": "da15f03674b01a5f90a754f4a330661ed7fe3185",
+          "version": "0.4.0"
+        }
+      },
+      {
         "package": "Multipart",
         "repositoryURL": "https://github.com/vapor/multipart.git",
         "state": {
@@ -168,8 +177,8 @@
         "repositoryURL": "https://github.com/vapor/vapor",
         "state": {
           "branch": null,
-          "revision": "c834f9495ff5ab9768b74f5822ff23d795e36922",
-          "version": "3.0.0-rc.2.8.1"
+          "revision": "f371fac686a54fff5fc1c5ee8a8e1b2201427c36",
+          "version": "3.0.0"
         }
       },
       {
