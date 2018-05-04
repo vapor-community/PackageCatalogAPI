@@ -14,8 +14,10 @@ final class PackageController: RouteCollection {
         
         let manifest = client.get("https://raw.githubusercontent.com/\(owner)/\(repo)/master/Package.swift")
         return manifest.flatMap(to: Response.self) { response in
-            guard response.http.status.code / 100 == 2 else {
-                throw Abort(.notFound, reason: "No package found with name '\(owner)/\(repo)'")
+            let status = response.http.status
+            guard status.code / 100 == 2 else {
+                if status.code == 404 { throw Abort(.notFound, reason: "No package found with name '\(owner)/\(repo)'") }
+                throw Abort(HTTPStatus.custom(code: status.code, reasonPhrase: status.reasonPhrase))
             }
             return client.get("https://api.github.com/repos/\(owner)/\(repo)")
         }.map(to: Response.self) { response in
