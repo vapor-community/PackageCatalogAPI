@@ -19,6 +19,7 @@ public typealias Head = String
 public struct Repository: Content {
     public let nameWithOwner: String
     public let description: String?
+    public let sshUrl: URL
     public let url: URL
     public let isFork: Bool
     public let parent: String?
@@ -47,6 +48,7 @@ public struct Repository: Content {
         case nameWithOwner
         case description
         case url
+        case sshUrl
         case isFork
         case parent
         case isPrivate
@@ -82,6 +84,7 @@ public struct Repository: Content {
         let container = try nodeContainer.nestedContainer(keyedBy: CodingKeys.self, forKey: .node)
         self.nameWithOwner = try container.decode(String.self, forKey: .nameWithOwner)
         self.description = try container.decode(String?.self, forKey: .description)
+        self.sshUrl = try container.decode(URL.self, forKey: .sshUrl)
         self.url = try container.decode(URL.self, forKey: .url)
         self.isFork = try container.decode(Bool.self, forKey: .isFork)
         

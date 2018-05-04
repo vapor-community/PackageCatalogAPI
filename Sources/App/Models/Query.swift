@@ -30,6 +30,7 @@ struct RepoQuery: GraphQLQuery {
             ... on Repository {
               nameWithOwner
               description
+              sshUrl
               url
               isFork
               parent {
