@@ -36,7 +36,8 @@ struct README: Content {
     }
     
     init(from decoder: Decoder)throws {
-        let data = try decoder.container(keyedBy: SubKeys.self)
+        let container = try decoder.container(keyedBy: SubKeys.self)
+        let data = try container.nestedContainer(keyedBy: SubKeys.self, forKey: .data)
         let repo = try data.nestedContainer(keyedBy: SubKeys.self, forKey: .repository)
         let readme = try repo.nestedContainer(keyedBy: CodingKeys.self, forKey: .readme)
         self.text = try readme.decode(String.self, forKey: .text)
