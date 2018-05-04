@@ -50,7 +50,9 @@ public enum GitHub {
     static func send<T>(query: T, on request: Request)throws -> Future<T.Response> where T: GraphQLQuery {
         let client = try request.make(Client.self)
         let body: QueryRequestBody = QueryRequestBody(query: query.query, variables: query.variables)
-        return client.send(.POST, headers: HTTPHeaders(query.header.map { $0 }), to: apiBaseURL, content: body).flatMap(to: T.Response.self) { response in
+        return client.post(apiBaseURL, headers: HTTPHeaders(query.header.map { $0 })) { request in
+            try request.content.encode(body)
+        }.flatMap(to: T.Response.self) { response in
             return try response.content.decode(T.Response.self)
         }
     }
