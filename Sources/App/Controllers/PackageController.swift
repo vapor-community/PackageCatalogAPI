@@ -1,3 +1,4 @@
+import Authentication
 import Vapor
 
 final class PackageController: RouteCollection {
@@ -5,6 +6,7 @@ final class PackageController: RouteCollection {
         let packages = router.grouped("packages")
         
         packages.get(String.parameter, String.parameter, use: get)
+        packages.get("search", use: search)
     }
     
     func get(_ request: Request)throws -> Future<Response> {
@@ -30,4 +32,23 @@ final class PackageController: RouteCollection {
             return response
         }
     }
+    
+    func search(_ request: Request)throws -> Future<SearchResult> {
+        guard let token = request.http.headers.bearerAuthorization else {
+            throw Abort(
+                .unauthorized,
+                reason: "GitHub requires an access token with the proper scopes to use the GraphQL API: https://developer.github.com/v4/guides/forming-calls/#authenticating-with-graphql. Add the token to the 'Authorization' header as a bearer token"
+            )
+        }
+        
+        let name = try request.query.get(String.self, at: "name")
+        return try GitHub.repos(on: request, with: name, accessToken: token.token, searchForks: false).map { search in
+            return SearchResult(repositories: search.repos, metadata: search.meta)
+        }
+    }
+}
+
+struct SearchResult: Content {
+    let repositories: [Repository]
+    let metadata: GitHub.MetaInfo
 }
