@@ -1,6 +1,30 @@
 import Manifest
 import Vapor
 
+final class ManifestQuery: GraphQLQuery {
+    typealias Response = ManifestExtractor
+    
+    var query: String = """
+    query ($owner: String!, $repo: String!) {
+      repository(owner:$owner, name:$repo) {
+        file: object(expression: "master:Package.swift") {
+          ... on Blob {
+              manifest: text
+          }
+        }
+      }
+    }
+    """
+    
+    var variables: [String : String]
+    var header: [String : String]
+    
+    init(owner: String, repo: String, token: String) {
+        self.variables = ["owner": owner, "repo": repo]
+        self.header = ["Authorization": "Bearer \(token)"]
+    }
+}
+
 struct ManifestExtractor: Content {
     let manifest: Manifest
     
