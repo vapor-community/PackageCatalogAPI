@@ -5,8 +5,9 @@ final class PackageController: RouteCollection {
     func boot(router: Router) throws {
         let packages = router.grouped("packages")
         
-        packages.get(String.parameter, String.parameter, use: get)
         packages.get("search", use: search)
+        packages.get(String.parameter, String.parameter, use: get)
+        packages.get(String.parameter, String.parameter, "readme", use: readme)
     }
     
     func get(_ request: Request)throws -> Future<Response> {
@@ -45,6 +46,20 @@ final class PackageController: RouteCollection {
         return try GitHub.repos(on: request, with: name, accessToken: token.token, searchForks: false).map { search in
             return SearchResult(repositories: search.repos, metadata: search.meta)
         }
+    }
+    
+    func readme(_ request: Request)throws -> Future<README> {
+        guard let token = request.http.headers.bearerAuthorization else {
+            throw Abort(
+                .unauthorized,
+                reason: "GitHub requires an access token with the proper scopes to use the GraphQL API: https://developer.github.com/v4/guides/forming-calls/#authenticating-with-graphql. Add the token to the 'Authorization' header as a bearer token"
+            )
+        }
+        
+        let owner = try request.parameters.next(String.self)
+        let repo = try request.parameters.next(String.self)
+        let query = READMEQuery(owner: owner, repo: repo, token: token.token)
+        return try GitHub.send(query: query, on: request)
     }
 }
 
