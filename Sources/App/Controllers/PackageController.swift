@@ -48,7 +48,7 @@ final class PackageController: RouteCollection {
         }
     }
     
-    func readme(_ request: Request)throws -> Future<README> {
+    func readme(_ request: Request)throws -> Future<Response> {
         guard let token = request.http.headers.bearerAuthorization else {
             throw Abort(
                 .unauthorized,
@@ -59,7 +59,12 @@ final class PackageController: RouteCollection {
         let owner = try request.parameters.next(String.self)
         let repo = try request.parameters.next(String.self)
         let query = READMEQuery(owner: owner, repo: repo, token: token.token)
-        return try GitHub.send(query: query, on: request)
+        return try GitHub.send(query: query, on: request).map(to: Response.self) { readme in
+            let response = request.makeResponse()
+            response.http.body = HTTPBody(data: Data(readme.text.utf8))
+            response.http.headers.replaceOrAdd(name: .contentType, value: "text/markdown; charset=UTF-8")
+            return response
+        }
     }
 }
 
