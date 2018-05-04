@@ -1,3 +1,5 @@
+import Vapor
+
 final class READMEQuery: GraphQLQuery {
     typealias Response = README
     
@@ -22,7 +24,9 @@ final class READMEQuery: GraphQLQuery {
     }
 }
 
-struct README: Codable {
+struct README: Content {
+    public static var defaultMediaType: MediaType = .init(type: "text", subType: "markdown", parameters: ["charset": "UTF-8"])
+    
     let text: String
     
     enum SubKeys: CodingKey {
