@@ -1,4 +1,5 @@
 import Authentication
+import Manifest
 import Vapor
 
 final class PackageController: RouteCollection {
@@ -67,6 +68,8 @@ final class PackageController: RouteCollection {
         }
     }
 }
+
+extension Manifest: Content {}
 
 struct SearchResult: Content {
     let repositories: [Repository]
