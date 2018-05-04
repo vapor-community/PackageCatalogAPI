@@ -29,7 +29,7 @@ public enum GitHub {
         }
     }
     
-    public struct MetaInfo {
+    public struct MetaInfo: Codable {
         let totalRepositoryCount: Int
         let swiftPackageCount: Int
         let rateLimitRemaining: Int
