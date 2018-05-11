@@ -6,11 +6,9 @@ final class ReleasesQuery: GraphQLQuery {
     var query: String = """
     query ($owner: String!, $repo: String!) {
         repository(owner:$owner, name:$repo) {
-        releases(first: 100, orderBy: {field: NAME, direction: DESC}) {
+        refs(first: 100, refPrefix: "refs/tags/", orderBy: {field: ALPHABETICAL, direction: DESC}) {
           nodes {
-            tag {
-              name
-            }
+            name
           }
         }
       }
@@ -32,7 +30,7 @@ struct Releases: Content {
     enum SubKeys: CodingKey {
         case data
         case repository
-        case releases
+        case refs
         case nodes
         case tag
         case name
@@ -44,13 +42,12 @@ struct Releases: Content {
         let container = try decoder.container(keyedBy: SubKeys.self)
         let data = try container.nestedContainer(keyedBy: SubKeys.self, forKey: .data)
         let respository = try data.nestedContainer(keyedBy: SubKeys.self, forKey: .repository)
-        let releases = try respository.nestedContainer(keyedBy: SubKeys.self, forKey: .releases)
-        var nodes = try releases.nestedUnkeyedContainer(forKey: .nodes)
+        let refs = try respository.nestedContainer(keyedBy: SubKeys.self, forKey: .refs)
+        var nodes = try refs.nestedUnkeyedContainer(forKey: .nodes)
         
         while !nodes.isAtEnd {
             let release = try nodes.nestedContainer(keyedBy: SubKeys.self)
-            let tag = try release.nestedContainer(keyedBy: SubKeys.self, forKey: .tag)
-            try tags.append(tag.decode(String.self, forKey: .name))
+            try tags.append(release.decode(String.self, forKey: .name))
         }
         
         self.releases = tags
