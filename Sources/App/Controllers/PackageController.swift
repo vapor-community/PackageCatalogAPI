@@ -90,7 +90,7 @@ final class PackageController: RouteCollection {
         return try GitHub.send(query: query, on: request).map(to: Manifest.self) { $0.manifest }
     }
     
-    func releases(_ request: Request)throws -> Future<[String]> {
+    func releases(_ request: Request)throws -> Future<Response> {
         guard let token = request.http.headers.bearerAuthorization else {
             throw Abort(
                 .unauthorized,
@@ -101,7 +101,12 @@ final class PackageController: RouteCollection {
         let owner = try request.parameters.next(String.self)
         let repo = try request.parameters.next(String.self)
         let query = ReleasesQuery(owner: owner, repo: repo, token: token.token)
-        return try GitHub.send(query: query, on: request).map(to: [String].self) { $0.releases }
+        return try GitHub.send(query: query, on: request).map(to: Response.self) { queryResult in
+            let response = request.makeResponse()
+            try response.content.encode(queryResult.releases, as: .json)
+            response.http.headers.replaceOrAdd(name: .contentType, value: "application/json")
+            return response
+        }
     }
 }
 

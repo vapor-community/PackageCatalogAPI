@@ -26,9 +26,7 @@ final class ReleasesQuery: GraphQLQuery {
     }
 }
 
-struct Releases: Content {
-    public static var defaultContentType: MediaType = .json
-    
+struct Releases: Content {    
     let releases: [String]
     
     enum SubKeys: CodingKey {
@@ -56,5 +54,11 @@ struct Releases: Content {
         }
         
         self.releases = tags
+    }
+}
+
+extension Array where Element == String {
+    public static var defaultContentType: MediaType {
+        return .json
     }
 }
