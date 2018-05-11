@@ -10,6 +10,7 @@ final class PackageController: RouteCollection {
         packages.get(String.parameter, String.parameter, use: get)
         packages.get(String.parameter, String.parameter, "readme", use: readme)
         packages.get(String.parameter, String.parameter, "manifest", use: manifest)
+        packages.get(String.parameter, String.parameter, "releases", use: releases)
     }
     
     func get(_ request: Request)throws -> Future<Response> {
@@ -87,6 +88,20 @@ final class PackageController: RouteCollection {
         let repo = try request.parameters.next(String.self)
         let query = ManifestQuery(owner: owner, repo: repo, token: token.token)
         return try GitHub.send(query: query, on: request).map(to: Manifest.self) { $0.manifest }
+    }
+    
+    func releases(_ request: Request)throws -> Future<[String]> {
+        guard let token = request.http.headers.bearerAuthorization else {
+            throw Abort(
+                .unauthorized,
+                reason: "GitHub requires an access token with the proper scopes to use the GraphQL API: https://developer.github.com/v4/guides/forming-calls/#authenticating-with-graphql. Add the token to the 'Authorization' header as a bearer token"
+            )
+        }
+        
+        let owner = try request.parameters.next(String.self)
+        let repo = try request.parameters.next(String.self)
+        let query = ReleasesQuery(owner: owner, repo: repo, token: token.token)
+        return try GitHub.send(query: query, on: request).map(to: [String].self) { $0.releases }
     }
 }
 
