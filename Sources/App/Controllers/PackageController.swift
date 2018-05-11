@@ -45,8 +45,14 @@ final class PackageController: RouteCollection {
         }
         
         let name = try request.query.get(String.self, at: "name")
-        return try GitHub.repos(on: request, with: name, accessToken: token.token, searchForks: false).map { search in
+        var searchOptions: [String: String] = [:]
+        
+        if let topic = try request.query.get(String?.self, at: "topic") { searchOptions["topic"] = topic }
+        
+        return try GitHub.repos(on: request, with: name, accessToken: token.token, searchOptions: searchOptions).map { search in
             return SearchResult(repositories: search.repos, metadata: search.meta)
+        }.catch { error in
+            print(error)
         }
     }
     

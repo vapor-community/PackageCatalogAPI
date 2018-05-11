@@ -63,11 +63,12 @@ struct RepoQuery: GraphQLQuery {
     """
     let variables: [String: String]
     let header: [String: String]
-    init(query: String, accessToken: String, searchForks: Bool) {
-        var queryString = "\(query) language:Swift" // TODO: would in:name,description be a good idea here?
-        if searchForks {
-            queryString += " fork:true"
+    init(name: String, accessToken: String, searchOptions: [String: String]) {
+        var queryString = "\(name) language:Swift"
+        for (key, value) in searchOptions {
+            queryString += " \(key):\(value)"
         }
+        
         self.variables = ["query": queryString]
         self.header = ["Authorization": "Bearer \(accessToken)"]
     }
