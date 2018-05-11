@@ -15,6 +15,6 @@ public func configure(
     services.register(router, as: Router.self)
     
     /// Register middleware
-    var middlewares = MiddlewareConfig.default()
+    let middlewares = MiddlewareConfig.default()
     services.register(middlewares)
 }
