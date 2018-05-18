@@ -55,7 +55,7 @@ final class PackageController: RouteCollection {
             throw Abort(.badRequest, reason: "Query limit exceeded 100 elements. Please pass in a value less than or equal to 100")
         }
         
-        return try GitHub.repos(on: request, with: name, accessToken: token.token, searchOptions: searchOptions).map { search in
+        return try GitHub.repos(on: request, with: name, limit: limit, accessToken: token.token, searchOptions: searchOptions).map { search in
             return SearchResult(repositories: search.repos, metadata: search.meta)
         }.catch { error in
             print(error)

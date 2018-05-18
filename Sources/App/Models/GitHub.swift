@@ -52,8 +52,8 @@ public enum GitHub {
         }
     }
     
-    public static func repos(on request: Request, with name: String, accessToken: String, searchOptions: [String: String])throws -> Future<(repos: [Repository], meta: MetaInfo)> {
-        let repoQuery = RepoQuery(name: name, accessToken: accessToken, searchOptions: searchOptions)
+    public static func repos(on request: Request, with name: String, limit: Int, accessToken: String, searchOptions: [String: String])throws -> Future<(repos: [Repository], meta: MetaInfo)> {
+        let repoQuery = RepoQuery(name: name, limit: limit, accessToken: accessToken, searchOptions: searchOptions)
         return try send(query: repoQuery, on: request).map(to: (repos: [Repository], meta: MetaInfo).self) { response in
             if let error = response.errors?.first {
                 throw error
@@ -68,7 +68,7 @@ public enum GitHub {
     }
     
     public static func firstRepo(on request: Request, with name: String, accessToken: String, searchOptions: [String: String])throws -> Future<(repo: Repository, meta: MetaInfo)> {
-        return try repos(on: request, with: name, accessToken: accessToken, searchOptions: searchOptions).map(to: (repo: Repository, meta: MetaInfo).self) { response in
+        return try repos(on: request, with: name, limit: 1, accessToken: accessToken, searchOptions: searchOptions).map(to: (repo: Repository, meta: MetaInfo).self) { response in
             guard let first = response.repos.first else {
                 throw GitHub.Error.noPackages
             }
