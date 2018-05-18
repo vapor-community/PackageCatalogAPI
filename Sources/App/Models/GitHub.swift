@@ -13,11 +13,6 @@
 import Foundation
 import Vapor
 
-struct QueryRequestBody {
-    let query: String
-    let variables: [String: Any]
-}
-
 public enum GitHub {
     public enum Error: Swift.Error, LocalizedError {
         case noPackages
@@ -49,9 +44,8 @@ public enum GitHub {
     
     static func send<T>(query: T, on request: Request)throws -> Future<T.Response> where T: GraphQLQuery {
         let client = try request.make(Client.self)
-        let body: QueryRequestBody = QueryRequestBody(query: query.query, variables: query.variables)
         return client.post(apiBaseURL, headers: HTTPHeaders(query.header.map { $0 })) { request in
-            let json = try JSONSerialization.data(withJSONObject: body, options: [])
+            let json = try JSONSerialization.data(withJSONObject: ["query": query.query, "variables": query.variables], options: [])
             request.http.body = HTTPBody(data: json)
         }.flatMap(to: T.Response.self) { response in
             return try response.content.decode(T.Response.self)
