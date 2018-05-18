@@ -22,8 +22,8 @@ protocol GraphQLQuery {
 struct RepoQuery: GraphQLQuery {
     typealias Response = RepoResponse
     let query = """
-    query ($query: String!) {
-      search(query: $query, type: REPOSITORY, first: 100) {
+    query ($query: String!, $limit: Int!) {
+      search(query: $query, type: REPOSITORY, first: $limit) {
         repositoryCount
         repositories: edges {
           node {
@@ -63,13 +63,13 @@ struct RepoQuery: GraphQLQuery {
     """
     let variables: [String: String]
     let header: [String: String]
-    init(name: String, accessToken: String, searchOptions: [String: String]) {
+    init(name: String, limit: Int = 100, accessToken: String, searchOptions: [String: String]) {
         var queryString = "\(name) language:Swift"
         for (key, value) in searchOptions {
             queryString += " \(key):\(value)"
         }
         
-        self.variables = ["query": queryString]
+        self.variables = ["query": queryString, "limit": "\(limit)"]
         self.header = ["Authorization": "Bearer \(accessToken)"]
     }
 }
