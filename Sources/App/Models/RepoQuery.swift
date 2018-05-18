@@ -11,6 +11,7 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import Foundation
+import Core
 
 protocol GraphQLQuery {
     associatedtype Response: Decodable
@@ -115,8 +116,11 @@ public struct SearchResponse: Decodable {
     }
 }
 
-public struct ErrorResponse: Decodable, Error, LocalizedError {
+public struct ErrorResponse: Decodable, Error, LocalizedError, Debuggable {
     let message: String
+    
+    public var identifier: String { return "githubAPIError" }
+    public var reason: String { return self.message }
     
     public var errorDescription: String? {
         return "GitHub API Error: \(message)"
