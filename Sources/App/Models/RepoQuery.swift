@@ -16,7 +16,7 @@ import Core
 protocol GraphQLQuery {
     associatedtype Response: Decodable
     var query: String { get }
-    var variables: [String: String] { get }
+    var variables: [String: Any] { get }
     var header: [String: String] { get }
 }
 
@@ -62,7 +62,7 @@ struct RepoQuery: GraphQLQuery {
       }
     }
     """
-    let variables: [String: String]
+    let variables: [String: Any]
     let header: [String: String]
     init(name: String, limit: Int = 100, accessToken: String, searchOptions: [String: String]) {
         var queryString = "\(name) language:Swift"
@@ -70,7 +70,7 @@ struct RepoQuery: GraphQLQuery {
             queryString += " \(key):\(value)"
         }
         
-        self.variables = ["query": queryString, "limit": "\(limit)"]
+        self.variables = ["query": queryString, "limit": limit]
         self.header = ["Authorization": "Bearer \(accessToken)"]
     }
 }

@@ -13,9 +13,9 @@
 import Foundation
 import Vapor
 
-struct QueryRequestBody: Content {
+struct QueryRequestBody {
     let query: String
-    let variables: [String: String]
+    let variables: [String: Any]
 }
 
 public enum GitHub {
@@ -51,7 +51,8 @@ public enum GitHub {
         let client = try request.make(Client.self)
         let body: QueryRequestBody = QueryRequestBody(query: query.query, variables: query.variables)
         return client.post(apiBaseURL, headers: HTTPHeaders(query.header.map { $0 })) { request in
-            try request.content.encode(body)
+            let json = try JSONSerialization.data(withJSONObject: body, options: [])
+            request.http.body = HTTPBody(data: json)
         }.flatMap(to: T.Response.self) { response in
             return try response.content.decode(T.Response.self)
         }

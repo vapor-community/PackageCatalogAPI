@@ -16,7 +16,7 @@ final class ManifestQuery: GraphQLQuery {
     }
     """
     
-    var variables: [String : String]
+    var variables: [String : Any]
     var header: [String : String]
     
     init(owner: String, repo: String, token: String) {
