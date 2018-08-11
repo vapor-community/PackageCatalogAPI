@@ -39,7 +39,9 @@ struct RepoQuery: GraphQLQuery {
               }
               isPrivate
               pushedAt
-              license
+              licenseInfo {
+                name
+              }
               openIssues: issues(first: 0, states: OPEN) {
                 totalCount
               }

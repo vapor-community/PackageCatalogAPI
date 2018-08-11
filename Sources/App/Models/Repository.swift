@@ -25,7 +25,7 @@ public struct Repository: Content {
     public let parent: String?
     public let isPrivate: Bool
     public let pushedAt: Date
-    public let license: String?
+    public let licenseInfo: String?
     public let openIssues: Int
     public let stargazers: Int
     public var tags: [Tag] = []
@@ -53,10 +53,14 @@ public struct Repository: Content {
         case parent
         case isPrivate
         case pushedAt
-        case license
         case openIssues
         case stargazers
         case packageManifest
+        case licenseInfo
+    }
+    
+    private enum LicenseInfoKeys: String, CodingKey {
+        case name
     }
     
     private enum NodeKeys: String, CodingKey {
@@ -93,7 +97,9 @@ public struct Repository: Content {
         
         self.isPrivate = try container.decode(Bool.self, forKey: .isPrivate)
         self.pushedAt = try container.decode(Date.self, forKey: .pushedAt)
-        self.license = try container.decode(String?.self, forKey: .license)
+
+        let info = try container.decodeIfPresent([String: String].self, forKey: .licenseInfo)
+        self.licenseInfo = info?[LicenseInfoKeys.name.rawValue]
         
         let openIssuesContainer = try container.nestedContainer(keyedBy: TotalCountContainer.self, forKey: .openIssues)
         self.openIssues = try openIssuesContainer.decode(Int.self, forKey: .totalCount)
